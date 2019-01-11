@@ -15,6 +15,7 @@ import argparse
 import string
 import config
 import json
+import codecs
 
 
 def get_parser():
@@ -42,7 +43,7 @@ class MyListener(StreamListener):
 
     def on_data(self, data):
         try:
-            with open(self.outfile, 'a') as f:
+            with codecs.open(self.outfile, 'a', encoding='utf8') as f:
                 f.write(data)
                 print(data)
                 return True
