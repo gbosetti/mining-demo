@@ -1,11 +1,14 @@
 import re
 # nltk.download('punkt')
 # from nltk.tokenize import word_tokenize
-# from Tokenizer import Tokenizer
 import string
+import operator
+import json
+from collections import Counter
 import nltk
 from nltk.corpus import stopwords
 nltk.download('stopwords')
+
 
 class Tokenizer:
 
@@ -47,3 +50,34 @@ class Tokenizer:
         if lowercase:
             tokens = [token if s.emoticon_re.search(token) else token.lower() for token in tokens]
         return tokens
+
+    def common_terms(self, tweets, num_terms=None):
+
+        count_all = Counter()
+        for tweet in tweets:
+            # Create a list with all the terms
+            tokens = self.remove_stopwords(tweet)
+            # Update the counter
+            count_all.update(tokens)
+
+        # Print the first n most frequent words
+        return count_all.most_common(num_terms)
+
+    def filterMentions(self, term):
+
+        if term.startswith('@'):
+            return True
+        else:
+            return False
+
+    def common_mentions(self, tweets, num_terms=None):
+
+        count_all = Counter()
+        for tweet in tweets:
+            tokens = self.remove_stopwords(tweet)
+            # hashtags = [for term in tokens: if term.startswith('#') return true ]
+
+            mentions = filter(lambda token: token.startswith('@'), tokens)
+
+            count_all.update(mentions)
+        return count_all.most_common(num_terms)

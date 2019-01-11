@@ -1,17 +1,34 @@
 import json
-from TokensCounter import TokensCounter
+from Tokenizer import Tokenizer
 
 
-file_name = 'data/stream_lyon.json'
+class PreProcessor:
 
-# Reading the full dataset
-with open(file_name, 'r') as file:
-    # line = file.readline()  # read only the first tweet/line
-    # tweet = json.loads(line)  # load it as Python dict
+    def __init__(self):
+         self.tokenizer = Tokenizer()
 
-    # Tokenizing and word counting
-    words_counter = TokensCounter()
-    print(words_counter.count_most_common(file, 5))
+    def read_raw_tweets(self, file_name):
+
+        tweets = []
+        with open(file_name, 'r') as file:
+            for line in file:
+                tweet = json.loads(line)
+                tweets.append(tweet)
+
+        return tweets
+
+    def common_terms(self, tweets, max_terms):
+
+        return self.tokenizer.common_terms(tweets, max_terms)
+
+    def common_mentions(self, tweets, max_terms):
+
+        return self.tokenizer.common_mentions(tweets, max_terms)
 
 
+# Instantiating the pre-processor and analyzing the data
+preprocessor = PreProcessor()
+tweets = preprocessor.read_raw_tweets('data/stream_lyon.json')
 
+print("Most common tokens: ", preprocessor.common_terms(tweets, 5))
+print("Most common mentions: ", preprocessor.common_mentions(tweets, None))
