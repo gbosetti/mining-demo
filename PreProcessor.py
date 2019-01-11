@@ -1,5 +1,5 @@
 import json
-from WordsCounter import WordsCounter
+from TokensCounter import TokensCounter
 
 
 file_name = 'data/stream_lyon.json'
@@ -10,7 +10,7 @@ with open(file_name, 'r') as file:
     # tweet = json.loads(line)  # load it as Python dict
 
     # Tokenizing and word counting
-    words_counter = WordsCounter()
+    words_counter = TokensCounter()
     print(words_counter.count_most_common(file, 5))
 
 

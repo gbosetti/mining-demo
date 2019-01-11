@@ -1,11 +1,16 @@
 import re
-# import nltk
 # nltk.download('punkt')
 # from nltk.tokenize import word_tokenize
 # from Tokenizer import Tokenizer
-
+import string
+import nltk
+from nltk.corpus import stopwords
+nltk.download('stopwords')
 
 class Tokenizer:
+
+    punctuation = list(string.punctuation)
+    stop_words = stopwords.words('english') + punctuation + ['rt', 'via']
 
     # Tokenizing and with an identification of emoticons, mentions, hashtags, urls, etc
     emoticons_str = r"""
@@ -30,6 +35,9 @@ class Tokenizer:
 
     tokens_re = re.compile(r'(' + '|'.join(regex_str) + ')', re.VERBOSE | re.IGNORECASE)
     emoticon_re = re.compile(r'^' + emoticons_str + '$', re.VERBOSE | re.IGNORECASE)
+
+    def remove_stopwords(self, tweet):
+        return [term for term in self.preprocess(tweet['text']) if term not in self.stop_words]
 
     def tokenize(s, t):
         return s.tokens_re.findall(t)
